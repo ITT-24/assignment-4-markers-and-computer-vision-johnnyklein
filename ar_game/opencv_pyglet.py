@@ -4,7 +4,7 @@ import pyglet
 from PIL import Image
 import sys
 
-video_id = 0
+video_id = 1
 
 if len(sys.argv) > 1:
     video_id = int(sys.argv[1])
