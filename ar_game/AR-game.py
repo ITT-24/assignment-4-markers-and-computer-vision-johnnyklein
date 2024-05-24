@@ -177,9 +177,9 @@ def on_draw():
             if marker_id in [0, 1, 2, 3]:
                 corner_0 = corners[i][0][0]
                 marker_coordinates.append([corner_0[0], corner_0[1]])
-    if len(ids) == 4:
-        frame = convert_frame(marker_coordinates, frame)
-        isRunning = True
+        if len(ids) == 4:
+            frame = convert_frame(marker_coordinates, frame)
+            isRunning = True
     frame = cv2.flip(frame, 2)
     img = cv2glet(frame, 'BGR')
     img.blit(0, 0, 0)
