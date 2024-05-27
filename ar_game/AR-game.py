@@ -27,6 +27,8 @@ detector = aruco.ArucoDetector(aruco_dict, aruco_params)
 
 # Create a video capture object for the webcam
 cap = cv2.VideoCapture(video_id)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -67,6 +69,7 @@ def order_points(pts): #taken from image extractor
     diff = np.diff(pts, axis=1)
     rect[1] = pts[np.argmin(diff)]  # top-right
     rect[3] = pts[np.argmax(diff)]  # bottom-left
+    print(rect)
     return rect
 
 
@@ -169,14 +172,15 @@ def on_draw():
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Detect ArUco markers in the frame
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=aruco_params)
-    marker_coordinates = []
+    marker_coordinates = [[0, 0], [0, 0], [0, 0], [0, 0]]
     # Check if marker is detected
     if ids is not None:
         #get coordinates of the markers, helped by chatpgt
         for i, marker_id in enumerate(ids.flatten()):
             if marker_id in [0, 1, 2, 3]:
                 corner_0 = corners[i][0][0]
-                marker_coordinates.append([corner_0[0], corner_0[1]])
+                marker_coordinates[marker_id] = [corner_0[0], corner_0[1]]
+                #marker_coordinates.append([corner_0[0], corner_0[1]])
         if len(ids) == 4:
             frame = convert_frame(marker_coordinates, frame)
             isRunning = True
